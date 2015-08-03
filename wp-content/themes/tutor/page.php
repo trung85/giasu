@@ -24,4 +24,11 @@
 $context = Timber::get_context();
 $post = new TimberPost();
 $context['post'] = $post;
+
+$register_post_id = get_query_var( 'register_post_id', null );
+if (!is_null($register_post_id)) {
+    $context['register_post_id'] = $register_post_id;
+    $context['register_post'] = Timber::get_post($register_post_id);
+}
+
 Timber::render( array( 'page-' . $post->post_name . '.twig', 'page.twig' ), $context );

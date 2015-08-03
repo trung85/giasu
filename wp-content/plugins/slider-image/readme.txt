@@ -3,14 +3,21 @@ Contributors: Huge-IT
 Donate link: http://huge-it.com/slider/
 Tags: slider, slideshow, wordpress slider, content slider, posts slider,image slider, responsive slideshow, image Rotator, jquery slider, Photo Slider, nivo slider, slider plugin, javascript slider, coin slider, responsive slider, featured-content-slider, Horizontal slider, carousel slider, wp slider, vertical slider, best slider plugin, content slideshow, javascript slideshow, slideshow manager, slideshow plugin, image slideshow, jquery slideshow, wordpress slideshow, vertical slides, responsive, nivoslider, flex slider, coinslider, carousel, post, posts, plugin, slider widget, widget slider, widget slideshow, widget, widgets, seo, wordpress seo, media, page, slide, slides, image, images, slide show,  video slider, free video slider, custom video slider, video slideshow, free video slideshow, youtube slider, vimeo  slider, vimeo  slideshow, youtube slideshow, HTML5 slider, recent post slider, 3D slider, slider shortcode, picture slider, responsive image slider, revolution slider, wordpress picture slider,
 Requires at least: 3.0.1
-Tested up to: 4.2.2
-Stable tag: 2.8.7
+Tested up to: 4.2.3
+Stable tag: 2.8.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Huge-IT slider is an awesome WordPress slider plugin with a lot of nice features. Just install and build sliders in a few minutes.
 
 == Description ==
+
+### Wordpress Slider
+
+* [Wordpress Slider](http://huge-it.com/slider/)
+* [Demo Slider](http://huge-it.com/wordpress-plugins-slider-demo-1-shuffle/)
+* [Demo Slider Admin](http://huge-it.com/wordpress-plugins-slider-demo-admin/)
+* [User Slider Manual](http://huge-it.com/wordpress-plugins-slider-user-manual/)
 
 Huge-IT Slider is a quick and easy way to add custom sliders to the WordPress websites (both to templates and posts/pages).
 The slider allows having unlimited amount of images with their titles and descriptions.
@@ -67,6 +74,9 @@ Now you can set your slider options, images and use our slider.
 5.  WordPress slider - Widget Slider      
 
 == Changelog ==
+
+= 2.8.8 =
+*  Front End bug fixed.
 
 = 2.8.7 =
 *  Security bug fixed.

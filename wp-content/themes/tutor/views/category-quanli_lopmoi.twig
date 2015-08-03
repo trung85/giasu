@@ -11,60 +11,7 @@
         </div>
         {% if posts %}
             {% for post in posts %}
-                <div class="lopmoi-item">
-                    <div class="left">
-                        <span>
-                            <label>Mã số:</label>
-                            <label>{{ post.ma_so }}</label>
-                        </span>
-                        <span>
-                            <label>Lớp dạy:</label>
-                            <label>{{ post.lop_day }}</label>
-                        </span>
-                        <span>
-                            <label>Môn dạy:</label>
-                            <label style="font-weight: normal;">{{ post.mon_day }}</label>
-                        </span>
-                        <span>
-                            <label>Số buổi:</label>
-                            <label style="font-weight: normal;">{{ post.so_buoi }}</label>
-                        </span>
-                        <span>
-                            <label>Thời gian:</label>
-                            <label style="font-weight: normal;">{{ post.thoi_gian }}</label>
-                        </span>
-                        <span>
-                            <label>Mức lương:</label>
-                            <label style="color: red;">{{ post.muc_luong }}</label>
-                        </span>
-                        <span>
-                            <label>Địa chỉ:</label>
-                            <label style="font-weight: normal;">{{ post.dia_chi }}</label>
-                        </span>
-                        <span>
-                            <label>Yêu cầu:</label>
-                            <label style="font-weight: normal;">{{ post.yeu_cau }}</label>
-                        </span>
-                        <span>
-                            <label>Liên hệ:</label>
-                            <label style="color: red;">{{ post.lien_he }}</label>
-                        </span>
-                    </div>
-                    <div class="right">
-                        <div style="margin-top: 90px;">
-                            {% if post.trang_thai == 0 %}
-                                <span style="color: red;display: block;">Chưa Giao</
-                                span>
-                                <span style="color: black;display: block;font-size: 12px;font-weight: bold;">(Lớp đang cần gia sư)</span>
-
-                                <input style="font-size: 12px;padding: 10px !important;" type="button" value="Đăng Ký Dạy Lớp Này" />
-                            {% else %}
-                                <span style="color: red;display: block;">Đã Giao</
-                                span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                {% include 'category-quanli_lopmoi-item.twig' with {'post_new_class' : post, 'hidden_register_class' : 'block'} %}
             {% endfor %}
         {% else %}
             Đang cập nhật nội dung

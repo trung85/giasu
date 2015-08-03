@@ -13,6 +13,14 @@
             $('.widget_wpfb_catlistwidget > ul > li > a:first').click();
         }
 
+        if ($('#account-bank').length > 0) {
+            $("#account-bank").hide();
+            $('.account-bank').click(function() {
+                $("#account-bank").removeAttr("style");
+                $(this).toggleClass('expanded').toggleClass('collapsed').find('> div').slideToggle('fast');
+            });
+            $('.account-bank').click();
+        }
 
         if ($('#statistics').length > 0) {
             $('#statistics .st-online').html($('#statistics .st-online').html() + getRandomInt(10, 20));
@@ -21,6 +29,12 @@
             $('#statistics .st-last-week').html($('#statistics .st-online').html() + getRandomInt(500, 1000));
             $('#statistics .st-last-month').html($('#statistics .st-online').html() + getRandomInt(1000, 1500));
             $('#statistics .st-all').html($('#statistics .st-online').html() + getRandomInt(10000, 50000));
+        }
+
+        if ($('#register_post_id').length > 0 && $('#your-class-id').length > 0) {
+            $('#your-class-id').val($('#register_post_id').val());
+            $('#your-class-name').val($('#register_post_title').val());
+            $('#your-class-code').val($('#register_post_ma_so').val());
         }
 
         function getRandomInt(min, max) {

@@ -14,8 +14,11 @@ class TutorSite extends TimberSite
     const SIDEBAR_LEFT   = 'sidebar_left';
     const SIDEBAR_FOOTER = 'sidebar_footer';
 
-    const HOME_PAGE_ID    = 117;
-    const SERVICE_CATE_ID = 11;
+    const HOME_PAGE_ID          = 117;
+    const SERVICE_CATE_ID       = 11;
+
+    const REGISTER_NEW_CLASS_ID = 561;
+    const POST_TYPE_NEW_CLASS   = 'quanli_lopmoi';
 
 	function __construct() {
 		//add_theme_support( 'post-formats' );
@@ -28,6 +31,8 @@ class TutorSite extends TimberSite
 		add_filter( 'timber_context', array( $this, 'add_to_context' ) );
 		add_filter( 'get_twig', array( $this, 'add_to_twig' ) );
 
+        add_filter( 'query_vars', array( $this, 'add_query_vars_filter' ) );
+
 		add_action( 'init', array( $this, 'register_post_types' ) );
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
         add_action( 'after_setup_theme', array( $this, 'register_menus' ) );
@@ -38,6 +43,11 @@ class TutorSite extends TimberSite
 
 		parent::__construct();
 	}
+
+    function add_query_vars_filter( $vars ){
+        $vars[] = "register_post_id";
+        return $vars;
+    }
 
 	function register_post_types() {
 		//this is where you can register custom post types
@@ -116,6 +126,8 @@ class TutorSite extends TimberSite
         $context[self::SIDEBAR_RIGHT] = Timber::get_sidebar(self::SIDEBAR_RIGHT . '.php', array('social_menu' => $context['social_menu']));
 
         $context['site_config'] = get_option('tz-todo');
+
+        $context['register_newclass_page_id'] = self::REGISTER_NEW_CLASS_ID;
 
 		return $context;
 	}

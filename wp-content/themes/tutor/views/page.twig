@@ -8,9 +8,17 @@
 		<article class="post-type-{{post.post_type}}" id="post-{{post.ID}}">
 			<section class="article-content">
 				<h3 class="article-h1">{{post.title}}</h3>
+				{% if register_post %}
+		                {% include 'category-quanli_lopmoi-item.twig' with {'post_new_class' : register_post, 'hidden_register_class' : 'none'} %}
+		        {% endif %}
 				<div class="article-body">
 					{{post.content}}
 				</div>
+				{% if register_post_id %}
+					<input type="hidden" id="register_post_id" value="{{register_post_id}}" />
+					<input type="hidden" id="register_post_title" value="{{register_post.post_title}}" />
+					<input type="hidden" id="register_post_ma_so" value="{{register_post.ma_so}}" />
+				{% endif %}
 			</section>
 		</article>
 	</div><!-- /content-wrapper -->

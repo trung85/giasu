@@ -1,0 +1,54 @@
+<div class="lopmoi-item">
+    <div class="left">
+        <span>
+            <label>Mã số:</label>
+            <label>{{ post_new_class.ma_so }}</label>
+        </span>
+        <span>
+            <label>Lớp dạy:</label>
+            <label>{{ post_new_class.lop_day }}</label>
+        </span>
+        <span>
+            <label>Môn dạy:</label>
+            <label style="font-weight: normal;">{{ post_new_class.mon_day }}</label>
+        </span>
+        <span>
+            <label>Số buổi:</label>
+            <label style="font-weight: normal;">{{ post_new_class.so_buoi }}</label>
+        </span>
+        <span>
+            <label>Thời gian:</label>
+            <label style="font-weight: normal;">{{ post_new_class.thoi_gian }}</label>
+        </span>
+        <span>
+            <label>Mức lương:</label>
+            <label style="color: red;">{{ post_new_class.muc_luong }}</label>
+        </span>
+        <span>
+            <label>Địa chỉ:</label>
+            <label style="font-weight: normal;">{{ post_new_class.dia_chi }}</label>
+        </span>
+        <span>
+            <label>Yêu cầu:</label>
+            <label style="font-weight: normal;">{{ post_new_class.yeu_cau }}</label>
+        </span>
+        <span>
+            <label>Liên hệ:</label>
+            <label style="color: red;">{{ post_new_class.lien_he }}</label>
+        </span>
+    </div>
+    <div class="right">
+        <div style="margin-top: 90px;">
+            {% if post_new_class.trang_thai == 0 %}
+                <span style="color: red;display: block;">Chưa Giao</
+                span>
+                <span style="color: black;display: block;font-size: 12px;font-weight: bold;">(Lớp đang cần gia sư)</span>
+
+                <input onclick="window.location='?page_id={{register_newclass_page_id}}&register_post_id={{ post_new_class.ID }}';" style="font-size: 12px;padding: 10px !important;display: {{hidden_register_class}}" type="button" value="Đăng Ký Dạy Lớp Này" />
+            {% else %}
+                <span style="color: red;display: block;">Đã Giao</
+                span>
+            {% endif %}
+        </div>
+    </div>
+</div>
