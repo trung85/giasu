@@ -1,0 +1,10 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <div class="breadcrumbs" xmlns:v="http://rdf.data-vocabulary.org/#">
+        {{ function('bcn_display') }}
+    </div>
+    <div class="content-wrapper">
+        {% include 'category-basic.twig' with {'category' : currentCategory, 'categoryPosts' : posts, 'template_uri' : template_uri} %}
+    </div><!-- /content-wrapper -->
+{% endblock %}

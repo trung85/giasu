@@ -1,0 +1,111 @@
+{% block html_head_container %}
+
+{% include 'html-header.twig' %}
+    {% block head %}
+    {% endblock %}
+    </head>
+{% endblock %}
+
+    <body class="{{body_class}}" data-template="base.twig">
+        <div id="wrapper">
+            <div id="container" class="container">
+                {% block header %}
+                    <div id="top-header" class="span-24" style="margin-bottom: 5px;">
+                        <div class="span-17">
+                            <div id="pagemenucontainer">
+                                <ul id="pagemenu">
+                                {% for item in primary_menu.get_items %}
+                                    <li class="nav-item {{item.classes | join(' ')}}">
+                                        <a class="nav-link" href="{{item.get_link}}">{{item.title}}</a>
+                                        {% if item.get_children %}
+                                            <ul class="nav nav-drop">
+                                            {% for child in item.get_children %}
+                                                <li class="nav-drop-item">
+                                                    <a class="nav-link" href="{{child.get_link}}">{{child.title}}</a>
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="topsearch" style="display:none;" class="span-7 last">
+                            {{search_form}}
+                        </div>
+                    </div>
+
+                    <div id="header" class="span-24">
+
+                        <div class="marquee-pretty marquee">
+                            <marquee behavior="scroll" direction="left">{{site_config.marquee_str}}</marquee>
+                        </div>
+                    </div>
+
+                    <div class="span-24">
+                        <div id="navcontainer">
+                            <ul id="nav" class="menu">
+                            {% for item in main_menu.get_items %}
+                                <li class="nav-item {{item.classes | join(' ')}}">
+                                    <a class="nav-link" href="{{item.get_link}}">{{item.title}}</a>
+                                    {% if item.get_children %}
+                                        <ul class="nav nav-drop">
+                                        {% for child in item.get_children %}
+                                            <li class="nav-drop-item">
+                                                <a class="nav-link" href="{{child.get_link}}">{{child.title}}</a>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endblock %}
+
+                <div class="span-24" id="contentwrap">
+                    {% if sidebar_left %}
+                        <aside class="layout-sidebar-left">
+                            {{sidebar_left}}
+                        </aside>
+                    {% endif %}
+                    {% if title %}<h1>{{title}}</h1>{% endif %}
+                    <div class="wrapper {{sidebar_class}}">
+                        <div class="span-14">
+                            <div id="content">
+                                {% block content %}
+                                    Sorry, no content
+                                {% endblock %}
+                            </div>
+                            <div id="advertise-info">
+                                {% block advertise_info %}
+                                    {% include 'advertise-info.twig' %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if sidebar_right %}
+                        <aside class="layout-sidebar-right">
+                            {{sidebar_right}}
+                        </aside>
+                    {% endif %}
+                </div>
+
+                {% block footer %}
+                    <div class="span-24">
+                        <footer id="footer">
+                            {% include 'footer.twig' %}
+                        </footer>
+                        <div id="credits">
+                            {{site_config.copyright}}
+                        </div>
+                    </div>
+
+                    {{ function('wp_footer') }}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

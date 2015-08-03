@@ -1,0 +1,8 @@
+<div id="search">
+    <form method="get" id="searchform" action="{{search_url}}/">
+        <input type="text" value="{{search_text}}"
+            name="s" id="s"  onblur="if (this.value == '')  {this.value = '{{search_text}}';}"
+            onfocus="if (this.value == '{{search_text}}') {this.value = '';}" />
+        <input type="image" src="{{template_uri}}/images/search.gif" style="border:0; vertical-align: top;" />
+    </form>
+</div>

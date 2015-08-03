@@ -1,0 +1,22 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <!-- images slider -->
+
+
+    <!-- post home page -->
+	{# {% include ['tease-'~post.post_type~'.twig', 'tease.twig'] with {'post': post} %} #}
+   <div class="content-wrapper">
+        <article class="post-type-{{post.post_type}}" id="post-{{post.ID}}">
+            <section class="article-content">
+                {# <h3 class="article-h1">{{post.title}}</h3> #}
+                <div class="article-body">
+                    {{post.content}}
+                </div>
+            </section>
+        </article>
+
+        <!-- service area -->
+        {% include 'category-basic.twig' with {'category' : serviceCat, 'categoryPosts' : postsOfService, 'template_uri' : template_uri} %}
+    </div>
+{% endblock %}
