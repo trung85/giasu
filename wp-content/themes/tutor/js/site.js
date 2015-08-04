@@ -15,6 +15,9 @@
 
         if ($('#account-bank').length > 0) {
             $("#account-bank").hide();
+
+            $("#account-bank").parent().parent().addClass('account-bank');
+
             $('.account-bank').click(function() {
                 $("#account-bank").removeAttr("style");
                 $(this).toggleClass('expanded').toggleClass('collapsed').find('> div').slideToggle('fast');

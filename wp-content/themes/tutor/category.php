@@ -12,7 +12,8 @@ $posts = Timber::query_posts(
 );
 
 $templates = array( 'category.twig' );
-if (!empty($posts->get_posts()[0]) && ($postType = $posts->get_posts()[0]->post_type) != 'post') {
+$postsAry = $posts->get_posts();
+if (!empty($postsAry[0]) && ($postType = $postsAry[0]->post_type) != 'post') {
     $templates = array( 'category-' . $postType .'.twig' );
 }
 
