@@ -43,7 +43,8 @@ body {
 }
 
 .article-content .article-body img {
-    width: 100% !important;
+    /*width: 100% !important;*/
+    max-width: 520px;
 }
 .article-content .article-body #wpfb-filebrowser-1 img {
     width: 32px !important;
@@ -135,6 +136,7 @@ a:hover {
 .marquee-pretty {
     font: 23px 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
     font-weight: bold;
+    width: 90%;
 }
 /* ::before was :before before ::before was ::before - kthx */
 
@@ -650,7 +652,7 @@ div.aligncenter {
 .sidebar a {
 	text-decoration: none;
 	color: black;
-    text-transform: lowercase;
+    /*text-transform: lowercase;*/
     font-weight: bold;
     font-size: 13px;
 }
