@@ -315,6 +315,10 @@ a:hover {
     cursor: pointer;
 }
 
+aside.AdWidget_ImageWidget img {
+    max-width: 204px;
+}
+
 pre { overflow: auto;
 	width: 470px;
 	}
