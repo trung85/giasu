@@ -15,6 +15,8 @@ class tzTodo {
         'bankname'    => '',
         'banknumber'  => '',
         'bankaccount' => '',
+        'teacher1'    => '',
+        'teacher2'    => '',
     );
 
     public function __construct() {
@@ -100,8 +102,14 @@ class tzTodo {
                     <tr valign="top"><th scope="row">Địa Chỉ:</th>
                         <td><input type="text" style="width: 50%" name="<?php echo $this->option_name?>[address]" value="<?php echo $options['address']; ?>" /></td>
                     </tr>
+                    <tr valign="top"><th scope="row">Tên Giáo Viên 1:</th>
+                        <td><input type="text" style="width: 50%" name="<?php echo $this->option_name?>[teacher1]" value="<?php echo $options['teacher1']; ?>" /></td>
+                    </tr>
                     <tr valign="top"><th scope="row">Điện Thoại 1:</th>
                         <td><input type="text" style="width: 50%" name="<?php echo $this->option_name?>[phone1]" value="<?php echo $options['phone1']; ?>" /></td>
+                    </tr>
+                    <tr valign="top"><th scope="row">Tên Giáo Viên 2:</th>
+                        <td><input type="text" style="width: 50%" name="<?php echo $this->option_name?>[teacher2]" value="<?php echo $options['teacher2']; ?>" /></td>
                     </tr>
                     <tr valign="top"><th scope="row">Điện Thoại 2:</th>
                         <td><input type="text" style="width: 50%" name="<?php echo $this->option_name?>[phone2]" value="<?php echo $options['phone2']; ?>" /></td>
@@ -138,7 +146,9 @@ class tzTodo {
         $valid = array();
         $valid['website_url'] = sanitize_text_field($input['website_url']);
         $valid['address']     = sanitize_text_field($input['address']);
+        $valid['teacher1']    = sanitize_text_field($input['teacher1']);
         $valid['phone1']      = sanitize_text_field($input['phone1']);
+        $valid['teacher2']    = sanitize_text_field($input['teacher2']);
         $valid['phone2']      = sanitize_text_field($input['phone2']);
         $valid['hotline']     = sanitize_text_field($input['hotline']);
         $valid['copyright']   = sanitize_text_field($input['copyright']);
