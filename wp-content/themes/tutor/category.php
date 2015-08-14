@@ -7,7 +7,8 @@ $currentCategory = get_queried_object();
 $posts = Timber::query_posts(
     array(
         'category_name' => $currentCategory->cat_name,
-        'post_type' => array('post', TutorSite::POST_TYPE_NEW_CLASS)
+        'post_type' => array('post', TutorSite::POST_TYPE_NEW_CLASS),
+        'nopaging' => true
     )
 );
 

@@ -107,6 +107,10 @@ class TutorSite extends TimberSite
         //wp_enqueue_style( 'tutor-bootstrap', $context['template_uri'] . '/includes/resources/bootstrap-3.3.5/css/bootstrap.min.css' );
         // load bootstrap js
         //wp_enqueue_script('tutor-bootstrapjs', $context['template_uri'] . '/includes/resources/bootstrap-3.3.5/js/bootstrap.min.js', array('jquery') );
+        //
+
+        wp_enqueue_style( 'tutor-datatablescss', $context['template_uri'] . '/includes/resources/datatables/datatables.min.css' );
+        wp_enqueue_script('tutor-datatablesjs', $context['template_uri'] . '/includes/resources/datatables/datatables.min.js', array('jquery') );
 
         wp_enqueue_script('tutor-bootstrapjs', $context['template_uri'] . '/js/site.js', array('jquery') );
     }

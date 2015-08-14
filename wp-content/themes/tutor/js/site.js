@@ -40,6 +40,33 @@
             $('#your-class-code').val($('#register_post_ma_so').val());
         }
 
+        $('#category-list').DataTable({
+            bFilter: false,
+            bInfo: false,
+            bLengthChange: false,
+            bProcessing: true,
+            sDom: '<"top"flp>rt<"bottom"i><"clear">',
+            oLanguage: {
+                oPaginate: {
+                    sPrevious: "Trang Trước",
+                    sNext: "Trang Sau",
+                }
+            }
+        });
+        $('#category-lopmoi').DataTable({
+            bFilter: false,
+            bInfo: false,
+            bLengthChange: false,
+            bProcessing: true,
+            sDom: '<"top"flp>rt<"bottom"i><"clear">',
+            oLanguage: {
+                oPaginate: {
+                    sPrevious: "Trang Trước",
+                    sNext: "Trang Sau",
+                }
+            }
+        });
+
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }

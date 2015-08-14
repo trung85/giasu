@@ -10,9 +10,20 @@
             <strong>{{currentCategory.description}}</strong>
         </div>
         {% if posts %}
-            {% for post in posts %}
-                {% include 'category-quanli_lopmoi-item.twig' with {'post_new_class' : post, 'hidden_register_class' : 'block'} %}
-            {% endfor %}
+            <table id="category-lopmoi" cellspacing="0" width="100%">
+                <thead style="display: none;">
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                        <tr><td>
+                        {% include 'category-quanli_lopmoi-item.twig' with {'post_new_class' : post, 'hidden_register_class' : 'block'} %}
+                        </td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             Đang cập nhật nội dung
         {% endif %}

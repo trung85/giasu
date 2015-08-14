@@ -4,19 +4,30 @@
         <strong>{{category.description}}</strong>
     </div>
     {% if posts %}
-        {% for post in categoryPosts %}
-            <div class="category-item">
-                {% if post.thumbnail.src != "" %}
-                    <img src="{{post.thumbnail.src}}" />
-                {% else %}
-                    <img src="{{template_uri}}/images/no-image.jpg" />
-                {% endif %}
-                <span class="post-date">{{ post.post_date|date }}</span><strong><a href="{{post.get_permalink()}}"> {{ post.title }} </a></strong>
-                <p>
-                   {{ post.post_excerpt }} <a class="read-more" href="{{ post.get_permalink() }}"> Chi tiết </a>
-                </p>
-            </div>
-        {% endfor %}
+        <table id="category-list" cellspacing="0" width="100%">
+            <thead style="display: none;">
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in categoryPosts %}
+                    <tr><td>
+                        <div class="category-item">
+                            {% if post.thumbnail.src != "" %}
+                                <img src="{{post.thumbnail.src}}" />
+                            {% else %}
+                                <img src="{{template_uri}}/images/no-image.jpg" />
+                            {% endif %}
+                            <span class="post-date">{{ post.post_date|date }}</span><strong><a href="{{post.get_permalink()}}"> {{ post.title }} </a></strong>
+                            <p>
+                               {{ post.post_excerpt }} <a class="read-more" href="{{ post.get_permalink() }}"> Chi tiết </a>
+                            </p>
+                        </div></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% else %}
         Đang cập nhật nội dung
     {% endif %}
