@@ -11,7 +11,7 @@
             <div id="container" class="container">
                 {% block header %}
                     <div id="top-header" class="span-24" style="margin-bottom: 5px;">
-                        <div class="span-17">
+                        <div class="span-15">
                             <div id="pagemenucontainer">
                                 <ul id="pagemenu">
                                 {% for item in primary_menu.get_items %}
@@ -31,8 +31,27 @@
                                 </ul>
                             </div>
                         </div>
-                        <div id="topsearch" style="display:none;" class="span-7 last">
-                            {{search_form}}
+                        <div id="topsearch" class="span-7 last" style="margin-top: 2px;width: 395px;">
+                            <style type="text/css">
+                                #___gcse_0 .gsc-control-cse {
+                                    height: 36px;
+                                    padding: 0px !important;
+                                }
+                            </style>
+                            {# {{search_form}} #}
+                            <script>
+                              (function() {
+                                var cx = '014499831519942097966:bdtfunw63_4';
+                                var gcse = document.createElement('script');
+                                gcse.type = 'text/javascript';
+                                gcse.async = true;
+                                gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                    '//cse.google.com/cse.js?cx=' + cx;
+                                var s = document.getElementsByTagName('script')[0];
+                                s.parentNode.insertBefore(gcse, s);
+                              })();
+                            </script>
+                            <gcse:search></gcse:search>
                         </div>
                     </div>
 
