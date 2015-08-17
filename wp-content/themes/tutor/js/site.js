@@ -26,12 +26,13 @@
         }
 
         if ($('#statistics').length > 0) {
-            $('#statistics .st-online').html($('#statistics .st-online').html() + getRandomInt(10, 20));
-            $('#statistics .st-today').html($('#statistics .st-online').html() + getRandomInt(50, 100));
-            $('#statistics .st-yesterday').html($('#statistics .st-online').html() + getRandomInt(500, 1000));
-            $('#statistics .st-last-week').html($('#statistics .st-online').html() + getRandomInt(500, 1000));
-            $('#statistics .st-last-month').html($('#statistics .st-online').html() + getRandomInt(1000, 1500));
-            $('#statistics .st-all').html($('#statistics .st-online').html() + getRandomInt(10000, 50000));
+            var img = "<img src='/wp-content/themes/tutor/images/online.png'/>";
+            $('#statistics .st-online').html(img + $('#statistics .st-online').html() + getRandomInt(10, 20));
+            $('#statistics .st-today').html(img + $('#statistics .st-today').html() + getRandomInt(50, 100));
+            $('#statistics .st-yesterday').html(img + $('#statistics .st-yesterday').html() + getRandomInt(500, 1000));
+            $('#statistics .st-last-week').html(img + img + img + $('#statistics .st-last-week').html() + getRandomInt(500, 1000));
+            $('#statistics .st-last-month').html(img + img + img + $('#statistics .st-last-month').html() + getRandomInt(1000, 1500));
+            $('#statistics .st-all').html(img + img + img + $('#statistics .st-all').html() + getRandomInt(10000, 50000));
         }
 
         if ($('#register_post_id').length > 0 && $('#your-class-id').length > 0) {
@@ -56,8 +57,10 @@
         $('#category-lopmoi').DataTable({
             bFilter: false,
             bInfo: false,
+            bSort: false,
             bLengthChange: false,
             bProcessing: true,
+            pageLength: 20,
             sDom: '<"top"flp>rt<"bottom"i><"clear">',
             oLanguage: {
                 oPaginate: {
@@ -68,7 +71,8 @@
         });
 
         function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+            var iii = Math.floor(Math.random() * (max - min + 1)) + min;
+            return "<label>" + iii + "</label>";
         }
     });
 })(jQuery);

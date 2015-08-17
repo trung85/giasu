@@ -485,6 +485,23 @@ jQuery(document).ready( function($) {
 				$('#in-' + taxonomy + '-' + id + ', #in-popular-' + taxonomy + '-' + id).prop( 'checked', c );
 		});
 
+		if ($('body').hasClass('post-type-quanli_lopmoi')) {
+			$('#categorychecklist li').hide();
+			$('#categorychecklist li#category-68').show();
+			$('#categorychecklist li#category-68 ul').children().show();
+
+			$('.categorydiv div#category-pop').remove();
+
+			$('.categorydiv div#category-all').click();
+
+			$('#categorychecklist li#category-119').show();
+			$('#categorychecklist li#category-120').show();
+			$('#categorychecklist li#category-121').show();
+			$('#categorychecklist li#category-122').show();
+			$('#categorychecklist li#category-123').show();
+			$('#categorychecklist li#category-125').show();
+			$('#categorychecklist li#category-126').show();
+		}
 	}); // end cats
 
 	// Custom Fields
