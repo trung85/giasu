@@ -459,6 +459,10 @@ pre { overflow: auto;
     display: inline-block;
     width: 212px;
 }
+.lopmoi-item .left span label:nth-child(2) p {
+    margin: 0px;
+}
+
 .lopmoi-item .right {
     float: right;
     text-align: center;
