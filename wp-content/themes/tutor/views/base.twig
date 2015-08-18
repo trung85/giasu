@@ -7,6 +7,16 @@
 {% endblock %}
 
     <body class="{{body_class}}" data-template="base.twig">
+        <!-- ga numbers -->
+        <div style="display: none;">
+            <input type="hidden" id="ga_online" value="{{ga_online}}" />
+            <input type="hidden" id="ga_today" value="{{ga_today}}" />
+            <input type="hidden" id="ga_yesterday" value="{{ga_yesterday}}" />
+            <input type="hidden" id="ga_last_week" value="{{ga_last_week}}" />
+            <input type="hidden" id="ga_last_month" value="{{ga_last_month}}" />
+            <input type="hidden" id="ga_all" value="{{ga_all}}" />
+        </div>
+
         <div id="wrapper">
             <div id="container" class="container">
                 {% block header %}

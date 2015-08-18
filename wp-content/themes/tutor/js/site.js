@@ -33,6 +33,16 @@
             $('#statistics .st-last-week').html(img + img + img + $('#statistics .st-last-week').html() + getRandomInt(500, 1000));
             $('#statistics .st-last-month').html(img + img + img + $('#statistics .st-last-month').html() + getRandomInt(1000, 1500));
             $('#statistics .st-all').html(img + img + img + $('#statistics .st-all').html() + getRandomInt(10000, 50000));
+            // $('#statistics .st-online').html(img + $('#statistics .st-online').html() + getGaNumber('#ga_online'));
+            // $('#statistics .st-today').html(img + $('#statistics .st-today').html() + getGaNumber('#ga_today'));
+            // $('#statistics .st-yesterday').html(img + $('#statistics .st-yesterday').html() + getGaNumber('#ga_yesterday'));
+            // $('#statistics .st-last-week').html(img + img + img + $('#statistics .st-last-week').html() + getGaNumber('#ga_last_week'));
+            // $('#statistics .st-last-month').html(img + img + img + $('#statistics .st-last-month').html() + getGaNumber('#ga_last_month'));
+            // $('#statistics .st-all').html(img + img + img + $('#statistics .st-all').html() + getGaNumber('#ga_all'));
+        }
+
+        function getGaNumber(el) {
+            return $(el).val();
         }
 
         if ($('#register_post_id').length > 0 && $('#your-class-id').length > 0) {
