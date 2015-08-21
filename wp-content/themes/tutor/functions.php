@@ -2,6 +2,8 @@
 
 require_once dirname(__FILE__) . '/includes/google-api-php-client/src/Google/autoload.php';
 
+require_once dirname(__FILE__) . '/includes/phpfastcache/phpfastcache.php';
+
 if ( ! class_exists( 'Timber' ) ) {
 	add_action( 'admin_notices', function() {
 			echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
@@ -135,8 +137,19 @@ class TutorSite extends TimberSite
 
         $context['register_newclass_page_id'] = self::REGISTER_NEW_CLASS_ID;
 
-        // $this->getDataFromGA($context);
-        // $this->getRealtimeDataFromGA($context);
+
+        $cache = phpFastCache("files");
+        $ga_cached = $cache->get('ga_cached');
+        if ($ga_cached == null) {
+            $ga = $this->getDataFromGA($context);
+            $gaReal = $this->getRealtimeDataFromGA($context);
+
+            // 300 = 5 minutes
+            $ga_cached = array_merge($ga, $gaReal);
+            $cache->set('ga_cached', $ga_cached, 300);
+        }
+
+        $context = array_merge($context, $ga_cached);
 
 		return $context;
 	}
@@ -148,7 +161,7 @@ class TutorSite extends TimberSite
 		return $twig;
 	}
 
-    public function getDataFromGA(&$context)
+    public function getDataFromGA($context)
     {
         // OAuth2 service account p12 key file
         $p12FilePath = $context['template_uri'] . '/includes/GiaSuTaiNangSaiGon-991960f3b23f.p12';
@@ -171,6 +184,8 @@ class TutorSite extends TimberSite
         );
 
         $client = new Google_Client();
+        $client->setClassConfig('Google_Cache_File', array('directory' => dirname(__FILE__) . '/cache'));
+
         $client->setAssertionCredentials($googleAssertionCredentials);
         $client->setClientId($serviceClientId);
         $client->setApplicationName("GiaSuTaiNangSaiGon");
@@ -197,94 +212,86 @@ class TutorSite extends TimberSite
                 'to' => date('Y-m-d')
             )
         );
+
+        $result = array();
         foreach ($dates as $gaKey => $value) {
-
-            $ga_cached = wp_cache_get( $gaKey, 'GA' );
-            if ( false === $ga_cached ) {
-
-                $startDate = $endDate = null;
-                if (is_array($value)) {
-                    $startDate = $value['from'];
-                    $endDate = $value['to'];
-                } else {
-                    $startDate = $endDate = $value;
-                }
-
-                $data = $analytics->data_ga->get($analyticsViewId, $startDate, $endDate, $metrics, array(
-                    'dimensions'    => 'ga:pagePath',
-                    'sort'          => '-ga:pageviews',
-                ));
-                // Data
-                $items = $data->getRows();
-
-                $total = 0;
-                foreach ($items as $key => $value) {
-                    $total += $value[1];
-                }
-
-                wp_cache_set( $gaKey, $total, 'GA', 300 );
-
-                $context[$gaKey] = $total;
+            $startDate = $endDate = null;
+            if (is_array($value)) {
+                $startDate = $value['from'];
+                $endDate = $value['to'];
             } else {
-                $context[$gaKey] = $ga_cached;
+                $startDate = $endDate = $value;
             }
+
+            $data = $analytics->data_ga->get($analyticsViewId, $startDate, $endDate, $metrics, array(
+                'dimensions'    => 'ga:pagePath',
+                'sort'          => '-ga:pageviews',
+            ));
+            // Data
+            $items = $data->getRows();
+
+            $total = 0;
+            foreach ($items as $key => $value) {
+                $total += $value[1];
+            }
+
+            $result[$gaKey] = $total;
         }
+
+        return $result;
     }
 
-    public function getRealtimeDataFromGA(&$context)
+    public function getRealtimeDataFromGA($context)
     {
-        $ga_cached = wp_cache_get( 'ga_online' );
-        if ( false === $ga_cached ) {
-            // OAuth2 service account p12 key file
-            $p12FilePath = $context['template_uri'] . '/includes/GiaSuTaiNangSaiGon-991960f3b23f.p12';
+        $result = array();
+        // OAuth2 service account p12 key file
+        $p12FilePath = $context['template_uri'] . '/includes/GiaSuTaiNangSaiGon-991960f3b23f.p12';
 
-            // OAuth2 service account ClientId
-            $serviceClientId = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt.apps.googleusercontent.com';
+        // OAuth2 service account ClientId
+        $serviceClientId = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt.apps.googleusercontent.com';
 
-            // OAuth2 service account email address
-            $serviceAccountName = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt@developer.gserviceaccount.com';
+        // OAuth2 service account email address
+        $serviceAccountName = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt@developer.gserviceaccount.com';
 
-            // Scopes we're going to use, only analytics for this tutorial
-            $scopes = array(
-                'https://www.googleapis.com/auth/analytics.readonly'
+        // Scopes we're going to use, only analytics for this tutorial
+        $scopes = array(
+            'https://www.googleapis.com/auth/analytics.readonly'
+        );
+
+        $googleAssertionCredentials = new Google_Auth_AssertionCredentials(
+            $serviceAccountName,
+            $scopes,
+            file_get_contents($p12FilePath)
+        );
+
+        $client = new Google_Client();
+        $client->setClassConfig('Google_Cache_File', array('directory' => dirname(__FILE__) . '/cache'));
+
+        $client->setAssertionCredentials($googleAssertionCredentials);
+        $client->setClientId($serviceClientId);
+        $client->setApplicationName("GiaSuTaiNangSaiGon");
+
+        // Create Google Service Analytics object with our preconfigured Google_Client
+        $analytics = new Google_Service_Analytics($client);
+        $analyticsViewId    = 'ga:106766364';
+        $optParams = array(
+            'dimensions' => 'rt:medium'
+        );
+
+        $result['ga_online'] = 0;
+        try {
+            $results = $analytics->data_realtime->get(
+                $analyticsViewId,
+                'rt:activeUsers',
+                $optParams
             );
-
-            $googleAssertionCredentials = new Google_Auth_AssertionCredentials(
-                $serviceAccountName,
-                $scopes,
-                file_get_contents($p12FilePath)
-            );
-
-            $client = new Google_Client();
-            $client->setAssertionCredentials($googleAssertionCredentials);
-            $client->setClientId($serviceClientId);
-            $client->setApplicationName("GiaSuTaiNangSaiGon");
-
-            // Create Google Service Analytics object with our preconfigured Google_Client
-            $analytics = new Google_Service_Analytics($client);
-            $analyticsViewId    = 'ga:106766364';
-            $optParams = array(
-                'dimensions' => 'rt:medium'
-            );
-
-            $context['ga_online'] = 0;
-            try {
-                $results = $analytics->data_realtime->get(
-                    $analyticsViewId,
-                    'rt:activeUsers',
-                    $optParams
-                );
-                $context['ga_online'] = $results->getTotalResults();
-
-                wp_cache_set( 'ga_online', $results->getTotalResults(), 'GA', 300 );
-            } catch (apiServiceException $e) {
-                // Handle API service exceptions.
-                // $error = $e->getMessage();
-            }
-        } else {
-            $context['ga_online'] = $ga_cached;
+            $result['ga_online'] = $results->getTotalResults();
+        } catch (apiServiceException $e) {
+            // Handle API service exceptions.
+            // $error = $e->getMessage();
         }
 
+        return $result;
     }
 
     static function get_context()
