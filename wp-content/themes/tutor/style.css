@@ -451,6 +451,9 @@ pre { overflow: auto;
     margin-bottom: 5px;
     width: 100%;
 }
+.lopmoi-item .left strong {
+    display: inline-block;
+}
 .lopmoi-item .left span label:first-child {
     display: inline-block;
     width: 100px;

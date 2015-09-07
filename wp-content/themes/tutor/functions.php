@@ -139,6 +139,9 @@ class TutorSite extends TimberSite
 
 
         $cache = phpFastCache("files");
+
+	try{
+
         $ga_cached = $cache->get('ga_cached');
         if ($ga_cached == null) {
             $ga = $this->getDataFromGA($context);
@@ -146,8 +149,21 @@ class TutorSite extends TimberSite
 
             // 300 = 5 minutes
             $ga_cached = array_merge($ga, $gaReal);
-            $cache->set('ga_cached', $ga_cached, 300);
-        }
+
+	    // cached in 20min
+            $cache->set('ga_cached', $ga_cached, 1200);
+
+	    // cached in one day
+	    $cache->set('ga_cached_one_day', $ga_cached, 86400);
+        } else {
+		//var_dump($ga_cached);
+	}
+
+	} catch (Exception $ex) {
+	    $ga_cached = $cache->get('ga_cached_one_day');
+	}
+
+	
 
         $context = array_merge($context, $ga_cached);
 
@@ -163,6 +179,8 @@ class TutorSite extends TimberSite
 
     public function getDataFromGA($context)
     {
+	
+
         // OAuth2 service account p12 key file
         $p12FilePath = $context['template_uri'] . '/includes/GiaSuTaiNangSaiGon-991960f3b23f.p12';
 
@@ -243,6 +261,7 @@ class TutorSite extends TimberSite
 
     public function getRealtimeDataFromGA($context)
     {
+
         $result = array();
         // OAuth2 service account p12 key file
         $p12FilePath = $context['template_uri'] . '/includes/GiaSuTaiNangSaiGon-991960f3b23f.p12';
