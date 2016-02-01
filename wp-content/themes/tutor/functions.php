@@ -137,35 +137,66 @@ class TutorSite extends TimberSite
 
         $context['register_newclass_page_id'] = self::REGISTER_NEW_CLASS_ID;
 
+        global $wpdb;
+        global $gaData;
+        if (empty($gaData)) {
+            $gaObject = $wpdb->get_results("SELECT * FROM wp_ga_data");
+            $gaData['ga_today']      = (date('H') + 7 > 6 ? (date('H') + 7) * 60 + date('i') : rand(10, 50)); // $gaObject[0]->access_num;
+            $gaData['ga_yesterday']  = $gaObject[1]->access_num;
+            $gaData['ga_last_week']  = $gaObject[2]->access_num;
+            $gaData['ga_last_month'] = $gaObject[3]->access_num;
+            $gaData['ga_all']        = $gaObject[4]->access_num;
+            $gaData['ga_online']     = $gaObject[5]->access_num;
+        }
 
-        $cache = phpFastCache("files");
+        // force display ga_today
+        $gaData['ga_online'] = rand(10, 100);
 
-	try{
+        foreach (array('ga_yesterday', 'ga_last_week') as $value) {
+            if ($gaData[$value] < 1000) {
+                $gaData[$value] += 1000;
+            }
+        }
+        // end force display ga_today
 
-        $ga_cached = $cache->get('ga_cached');
-        if ($ga_cached == null) {
-            $ga = $this->getDataFromGA($context);
-            $gaReal = $this->getRealtimeDataFromGA($context);
+        $context = array_merge($context, $gaData);
 
-            // 300 = 5 minutes
-            $ga_cached = array_merge($ga, $gaReal);
+        // $cache = phpFastCache("files");
 
-	    // cached in 20min
-            $cache->set('ga_cached', $ga_cached, 1200);
+        // try {
 
-	    // cached in one day
-	    $cache->set('ga_cached_one_day', $ga_cached, 86400);
-        } else {
-		//var_dump($ga_cached);
-	}
+        //     $ga_cached = $cache->get('ga_cached');
+        //     if ($ga_cached == null) {
+        //         $ga = $this->getDataFromGA($context);
+        //         $gaReal = $this->getRealtimeDataFromGA($context);
 
-	} catch (Exception $ex) {
-	    $ga_cached = $cache->get('ga_cached_one_day');
-	}
+        //         // 300 = 5 minutes
+        //         $ga_cached = array_merge($ga, $gaReal);
 
-	
+        //         // cached in 20min
+        //         $cache->set('ga_cached', $ga_cached, 1200);
 
-        $context = array_merge($context, $ga_cached);
+        //         // cached in one day
+        //         $cache->set('ga_cached_one_day', $ga_cached, 86400);
+        //     } else {
+        //         //var_dump($ga_cached);
+        //     }
+
+        // } catch (Exception $ex) {
+        //     $ga_cached = $cache->get('ga_cached_one_day');
+        // }
+
+        // // force display ga_today
+        // $ga_cached['ga_online'] = rand(10, 100);
+
+        // foreach (array('ga_yesterday', 'ga_last_week') as $value) {
+        //     if ($ga_cached[$value] < 1000) {
+        //         $ga_cached[$value] += 1000;
+        //     }
+        // }
+        // // end force display ga_today
+
+        // $context = array_merge($context, $ga_cached);
 
 		return $context;
 	}
@@ -176,142 +207,6 @@ class TutorSite extends TimberSite
 		$twig->addFilter( 'myfoo', new Twig_Filter_Function( 'myfoo' ) );
 		return $twig;
 	}
-
-    public function getDataFromGA($context)
-    {
-	
-
-        // OAuth2 service account p12 key file
-        $p12FilePath = $context['template_uri'] . '/includes/GiaSuTaiNangSaiGon-991960f3b23f.p12';
-
-        // OAuth2 service account ClientId
-        $serviceClientId = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt.apps.googleusercontent.com';
-
-        // OAuth2 service account email address
-        $serviceAccountName = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt@developer.gserviceaccount.com';
-
-        // Scopes we're going to use, only analytics for this tutorial
-        $scopes = array(
-            'https://www.googleapis.com/auth/analytics.readonly'
-        );
-
-        $googleAssertionCredentials = new Google_Auth_AssertionCredentials(
-            $serviceAccountName,
-            $scopes,
-            file_get_contents($p12FilePath)
-        );
-
-        $client = new Google_Client();
-        $client->setClassConfig('Google_Cache_File', array('directory' => dirname(__FILE__) . '/cache'));
-
-        $client->setAssertionCredentials($googleAssertionCredentials);
-        $client->setClientId($serviceClientId);
-        $client->setApplicationName("GiaSuTaiNangSaiGon");
-
-        // Create Google Service Analytics object with our preconfigured Google_Client
-        $analytics = new Google_Service_Analytics($client);
-        // Add Analytics View ID, prefixed with "ga:"
-        $analyticsViewId    = 'ga:106766364';
-        $metrics            = 'ga:pageviews';
-
-        $dates = array(
-            'ga_today' => date("Y-m-d"),
-            'ga_yesterday' => date('Y-m-d', strtotime("-1 days")),
-            'ga_last_week' => array(
-                'from' => date("Y-m-d", strtotime("-1 week +1 day")),
-                'to' => date('Y-m-d', strtotime("-1 days"))
-            ),
-            'ga_last_month' => array(
-                'from' => date("Y-m-d", strtotime("-1 month +1 day")),
-                'to' => date('Y-m-d', strtotime("-1 days"))
-            ),
-            'ga_all' => array(
-                'from' => "2015-08-01",
-                'to' => date('Y-m-d')
-            )
-        );
-
-        $result = array();
-        foreach ($dates as $gaKey => $value) {
-            $startDate = $endDate = null;
-            if (is_array($value)) {
-                $startDate = $value['from'];
-                $endDate = $value['to'];
-            } else {
-                $startDate = $endDate = $value;
-            }
-
-            $data = $analytics->data_ga->get($analyticsViewId, $startDate, $endDate, $metrics, array(
-                'dimensions'    => 'ga:pagePath',
-                'sort'          => '-ga:pageviews',
-            ));
-            // Data
-            $items = $data->getRows();
-
-            $total = 0;
-            foreach ($items as $key => $value) {
-                $total += $value[1];
-            }
-
-            $result[$gaKey] = $total;
-        }
-
-        return $result;
-    }
-
-    public function getRealtimeDataFromGA($context)
-    {
-
-        $result = array();
-        // OAuth2 service account p12 key file
-        $p12FilePath = $context['template_uri'] . '/includes/GiaSuTaiNangSaiGon-991960f3b23f.p12';
-
-        // OAuth2 service account ClientId
-        $serviceClientId = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt.apps.googleusercontent.com';
-
-        // OAuth2 service account email address
-        $serviceAccountName = '720446430781-5cvfn89mkugmttmiuptlq5693gbr2blt@developer.gserviceaccount.com';
-
-        // Scopes we're going to use, only analytics for this tutorial
-        $scopes = array(
-            'https://www.googleapis.com/auth/analytics.readonly'
-        );
-
-        $googleAssertionCredentials = new Google_Auth_AssertionCredentials(
-            $serviceAccountName,
-            $scopes,
-            file_get_contents($p12FilePath)
-        );
-
-        $client = new Google_Client();
-        $client->setClassConfig('Google_Cache_File', array('directory' => dirname(__FILE__) . '/cache'));
-
-        $client->setAssertionCredentials($googleAssertionCredentials);
-        $client->setClientId($serviceClientId);
-        $client->setApplicationName("GiaSuTaiNangSaiGon");
-
-        // Create Google Service Analytics object with our preconfigured Google_Client
-        $analytics = new Google_Service_Analytics($client);
-        $analyticsViewId    = 'ga:106766364';
-        $optParams = array(
-            'dimensions' => 'rt:medium'
-        );
-
-        $result['ga_online'] = 0;
-        try {
-            $results = $analytics->data_realtime->get(
-                $analyticsViewId,
-                'rt:activeUsers',
-                $optParams
-            );
-            $result['ga_online'] = $results->getTotalResults();
-        } catch (apiServiceException $e) {
-            // Handle API service exceptions.
-            // $error = $e->getMessage();
-        }
-
-        return $result;
-    }
 
     static function get_context()
     {
