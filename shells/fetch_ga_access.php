@@ -43,6 +43,10 @@ $conn->close();
 
 function executeSql($conn, $gaKey, $accessNum)
 {
+    if (is_null($accessNum)) {
+        return;
+    }
+
     $sql =  <<<_SQL_
     UPDATE wp_ga_data SET access_num=$accessNum      WHERE ga_key='$gaKey';
 _SQL_;
@@ -125,12 +129,14 @@ function getDataFromGA()
         // Data
         $items = $data->getRows();
 
-        $total = 0;
-        foreach ($items as $key => $value) {
-            $total += $value[1];
-        }
+        $result[$gaKey] = null;
 
-        $result[$gaKey] = $total;
+        if (!empty($items)) {
+            $result[$gaKey] = 0;
+            foreach ($items as $key => $value) {
+                $result[$gaKey] += $value[1];
+            }
+        }
     }
 
     return $result;
@@ -185,6 +191,7 @@ function getRealtimeDataFromGA()
     } catch (apiServiceException $e) {
         // Handle API service exceptions.
         // $error = $e->getMessage();
+        $result['ga_online'] = null;
     }
 
     return $result;
