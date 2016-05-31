@@ -13,7 +13,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
+/*
 mylog("----- Fetch starting... -----" . PHP_EOL);
 
 $data          = getDataFromGA();
@@ -35,6 +35,10 @@ $data          = getRealtimeDataFromGA();
 executeSql($conn, 'ga_online', $data['ga_online']);
 
 mylog("----- Fetch ended -----" . PHP_EOL);
+*/
+
+$rand = rand(1000, 1200);
+executeSql($conn, 'ga_all', $rand);
 
 $conn->close();
 
@@ -48,7 +52,7 @@ function executeSql($conn, $gaKey, $accessNum)
     }
 
     $sql =  <<<_SQL_
-    UPDATE wp_ga_data SET access_num=$accessNum      WHERE ga_key='$gaKey';
+    UPDATE wp_ga_data SET access_num=access_num + $accessNum      WHERE ga_key='$gaKey';
 _SQL_;
 
     if ($conn->query($sql) === TRUE) {
